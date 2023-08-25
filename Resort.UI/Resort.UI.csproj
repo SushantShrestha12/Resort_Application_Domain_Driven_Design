@@ -27,7 +27,13 @@
     <ItemGroup>
       <ProjectReference Include="..\Resort.Application\Resort.Application.csproj" />
       <ProjectReference Include="..\Resort.Infrastructure\Resort.Infrastructure.csproj" />
+
+
+
+
+
     </ItemGroup>
+
 
 
 
