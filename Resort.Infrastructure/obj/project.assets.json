@@ -2738,11 +2738,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/sushantshrestha/Projects/Resort/Resort.Infrastructure/Resort.Infrastructure.csproj",
+      "projectUniqueName": "/Users/sushantshrestha/Desktop/Resort1/Resort.Infrastructure/Resort.Infrastructure.csproj",
       "projectName": "Resort.Infrastructure",
-      "projectPath": "/Users/sushantshrestha/Projects/Resort/Resort.Infrastructure/Resort.Infrastructure.csproj",
+      "projectPath": "/Users/sushantshrestha/Desktop/Resort1/Resort.Infrastructure/Resort.Infrastructure.csproj",
       "packagesPath": "/Users/sushantshrestha/.nuget/packages/",
-      "outputPath": "/Users/sushantshrestha/Projects/Resort/Resort.Infrastructure/obj/",
+      "outputPath": "/Users/sushantshrestha/Desktop/Resort1/Resort.Infrastructure/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/Users/sushantshrestha/.nuget/NuGet/NuGet.Config"
@@ -2758,8 +2758,8 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "projectReferences": {
-            "/Users/sushantshrestha/Projects/Resort/Resort.Domain/Resort.Domain.csproj": {
-              "projectPath": "/Users/sushantshrestha/Projects/Resort/Resort.Domain/Resort.Domain.csproj"
+            "/Users/sushantshrestha/Desktop/Resort1/Resort.Domain/Resort.Domain.csproj": {
+              "projectPath": "/Users/sushantshrestha/Desktop/Resort1/Resort.Domain/Resort.Domain.csproj"
             }
           }
         }
