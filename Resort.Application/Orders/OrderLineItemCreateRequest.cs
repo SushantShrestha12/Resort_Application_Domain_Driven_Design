@@ -1,8 +1,4 @@
-using System.Collections;
 using MediatR;
-using Resort.Domain;
-using Resort.Domain.Orders;
-using Resort.Infrastructure;
 
 namespace Resort.Application.Orders;
 public class OrderLineItemCreateRequest: IRequest

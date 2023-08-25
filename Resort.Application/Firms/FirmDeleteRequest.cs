@@ -6,7 +6,7 @@ namespace Resort.Application.Firms;
 
 public class FirmDeleteRequest: IRequest<Firm>
 {
-    public Guid FirmId { get; set; }    
+    public Guid FirmId { get; set; }
 }
 
 public class FirmDeleteRequestHandler : IRequestHandler<FirmDeleteRequest, Firm>

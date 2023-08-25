@@ -4,10 +4,9 @@ using Resort.Infrastructure;
 
 namespace Resort.Application.Firms;
 
-public class PaymentCreateRequest: IRequest<Payment>
+public class PaymentUpdateRequest: IRequest<Payment>
 {
-    public Guid FirmId { get; set; }
-    public Guid CustomerId { get; set; }
+    public Guid PaymentId { get; set; }
     public string Date { get; set; }
     public string Price { get;  set; }
     public string Total { get;  set; }
@@ -15,26 +14,24 @@ public class PaymentCreateRequest: IRequest<Payment>
     public string GrandTotal { get;  set; }
 }
 
-public class PaymentCreateRequestHandler : IRequestHandler<PaymentCreateRequest, Payment>
+public class PaymentUpdateRequestHandler : IRequestHandler<PaymentUpdateRequest, Payment>
 {
     private readonly ResortDbContext _context;
 
-    public PaymentCreateRequestHandler(ResortDbContext context)
+    public PaymentUpdateRequestHandler(ResortDbContext context)
     {
         _context = context;
     }
 
 
-    public async Task<Payment> Handle(PaymentCreateRequest request, CancellationToken cancellationToken)
+    public async Task<Payment> Handle(PaymentUpdateRequest request, CancellationToken cancellationToken)
     {
-        Guid paymentId = Guid.NewGuid();
-        Payment payment = new Payment(paymentId, request.Date, request.Price,
+        Payment payment = new Payment(request.PaymentId, request.Date, request.Price,
             request.Total, request.Discount, request.GrandTotal);
 
-        _context.Payments.Add(payment);
+        _context.Payments.Update(payment);
         await _context.SaveChangesAsync(cancellationToken);
 
         return payment;
     }
 }
-    

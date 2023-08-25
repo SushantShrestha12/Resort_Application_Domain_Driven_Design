@@ -1,6 +1,5 @@
 using MediatR;
 using Resort.Domain;
-using Resort.Domain.Firms;
 using Resort.Infrastructure;
 
 namespace Resort.Application.Firms;
@@ -8,7 +7,6 @@ namespace Resort.Application.Firms;
 public class RoomDeleteRequest: IRequest
 {
     public Guid FirmId { get; set; }
-    public int RoomId { get; set; }
     public string Number { get; set; }
     public RoomTypes  RoomType { get; set; }
     public bool AC { get;  set; }
@@ -37,6 +35,6 @@ public class RoomDeleteRequestHandler: IRequestHandler<RoomDeleteRequest>
         var firm = _context.Firms.FirstOrDefault(f => f.Id == request.FirmId);
         firm.RemoveRoom(request.Number, request.RoomType, features, rates);
         
-        await _context.SaveChangesAsync(cancellationToken);
+        await _context.SaveChangesAsync(cancellationToken);        
     }
 }
