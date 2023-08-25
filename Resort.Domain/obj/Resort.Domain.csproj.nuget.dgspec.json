@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/Users/sushantshrestha/Projects/Resort/Resort.Domain/Resort.Domain.csproj": {}
+    "/Users/sushantshrestha/Desktop/Resort1/Resort.Domain/Resort.Domain.csproj": {}
   },
   "projects": {
-    "/Users/sushantshrestha/Projects/Resort/Resort.Domain/Resort.Domain.csproj": {
+    "/Users/sushantshrestha/Desktop/Resort1/Resort.Domain/Resort.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/sushantshrestha/Projects/Resort/Resort.Domain/Resort.Domain.csproj",
+        "projectUniqueName": "/Users/sushantshrestha/Desktop/Resort1/Resort.Domain/Resort.Domain.csproj",
         "projectName": "Resort.Domain",
-        "projectPath": "/Users/sushantshrestha/Projects/Resort/Resort.Domain/Resort.Domain.csproj",
+        "projectPath": "/Users/sushantshrestha/Desktop/Resort1/Resort.Domain/Resort.Domain.csproj",
         "packagesPath": "/Users/sushantshrestha/.nuget/packages/",
-        "outputPath": "/Users/sushantshrestha/Projects/Resort/Resort.Domain/obj/",
+        "outputPath": "/Users/sushantshrestha/Desktop/Resort1/Resort.Domain/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/Users/sushantshrestha/.nuget/NuGet/NuGet.Config"
