@@ -1,4 +1,5 @@
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Resort.Domain.Customers;
 using Resort.Domain.SharedKernel;
 using Resort.Infrastructure;
@@ -29,16 +30,20 @@ public class CustomerUpdateRequestHandler : IRequestHandler<CustomerUpdateReques
     
     public async Task<Customer> Handle(CustomerUpdateRequest request, CancellationToken cancellationToken)
     {
+        var customerToUpdate = await _context.Customers.FirstOrDefaultAsync(c => c.Id == request.CustomerId);
+        if (customerToUpdate == null)
+            return null;
+        
         Address address = new Address(request.Province, request.City, request.Municipality,
             request.AddressLine, request.WardNumber);
-
         Contact contact = new Contact(request.MobileNumber, request.Email);
 
-        Customer customer = new Customer(request.CustomerId, request.Name, address, contact);
-
-        _context.Customers.Update(customer);
+        customerToUpdate.UpdateAddress(address);
+        customerToUpdate.UpdateContactDetail(contact);
+        
+        _context.Customers.Update(customerToUpdate);
         await _context.SaveChangesAsync(cancellationToken);
 
-        return customer;
+        return customerToUpdate;
     }
 }

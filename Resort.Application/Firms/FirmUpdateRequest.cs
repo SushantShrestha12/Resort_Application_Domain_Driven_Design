@@ -1,4 +1,5 @@
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Resort.Domain.Firms;
 using Resort.Domain.SharedKernel;
 using Resort.Infrastructure;
@@ -34,24 +35,21 @@ public class FirmUpdateRequestHandler : IRequestHandler<FirmUpdateRequest, Firm>
     
     public async Task<Firm> Handle(FirmUpdateRequest request, CancellationToken cancellationToken)
     {
+        var firmToUpdate = await _context.Firms.FirstOrDefaultAsync(f => f.Id == request.FirmId);
+        if (firmToUpdate == null)
+            return null;
         
         Address address = new Address(request.Province, request.City, request.Municipality, request.AddressLine,
             request.WardNumber);
-
         Contact contact = new Contact(request.ContactPerson, request.MobileNumber, request.TelephoneNumber,
             request.Email, request.Website);
-
         
-        Firm firm = new Firm(request.FirmId, request.Name, address, contact);
-        
-        if (firm == null)
-        {
-            return null;
-        }
+        firmToUpdate.UpdateAddress(address);
+        firmToUpdate.UpdateContactDetail(contact);
 
-        _context.Firms.Update(firm);
+        _context.Firms.Update(firmToUpdate);
         await _context.SaveChangesAsync(cancellationToken);
 
-        return firm;
+        return firmToUpdate;
     }
 }
