@@ -53,14 +53,13 @@ public class Firm : AggregateRoot<Guid>
         _foodMenus.Add(new FoodMenu(foodName, price, quantity, type));
     }
 
-    public void UpdateAddress(string province, string city, string municipality, string addressLine, string wardNo)
+    public void UpdateAddress(Address address)
     {
-        Address = new( province, city, municipality, addressLine, wardNo);
+        Address = address;
     }
-    
-    public void UpdateContactDetail(string contactPerson, string mobileNumber, string telephone, string email, string website)
+    public void UpdateContactDetail(Contact contact)
     {
-        Contact = new(contactPerson, mobileNumber, telephone, email, website);
+        Contact = contact;
     }
 }
 

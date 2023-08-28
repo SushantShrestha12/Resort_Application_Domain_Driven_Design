@@ -24,5 +24,11 @@ public class Booking: AggregateRoot<Guid>
     public Guid CustomerId { get; private set; }
     public DateTime DateBooked { get; private set; }
     public DateTime DateBookedFor { get; private set; }
+    
+    public void UpdateBooking(DateTime dateBooked, DateTime dateBookedFor)
+    {
+        DateBooked = dateBooked;
+        DateBookedFor = dateBookedFor;
+    }
      
 }
