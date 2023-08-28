@@ -36,33 +36,15 @@ public class PaymentController: ControllerBase
         return Results.Ok(result);
     }
     
-    [HttpDelete]
-    [Route("payment/{paymentId}")]
-    public async Task<IResult> DeletePayment(Guid paymentId, [FromBody] PaymentDelete customer)
+    [HttpGet]
+    [Route("Payment/{paymentId}")]
+    public async Task<IResult> ReadPayment(Guid paymentId)
     {
-        var command = new PaymentDeleteRequest()
+        var command = new PaymentReadRequest()
         {
             PaymentId = paymentId
         };
-        
-        var result = await _mediator.Send(command);
-        return Results.Ok(result);
-    }
-    
-    [HttpPut]
-    [Route("payment/{paymentId}")]
-    public async Task<IResult> UpdateBooking(Guid paymentId, [FromBody] PaymentUpdate payment)
-    {
-        var command = new PaymentUpdateRequest()
-        {
-            PaymentId = paymentId,
-            Date = payment.Date,
-            Price = payment.Price,
-            Total = payment.Total,
-            Discount = payment.Discount,
-            GrandTotal = payment.GrandTotal
-        };
-        
+
         var result = await _mediator.Send(command);
         return Results.Ok(result);
     }

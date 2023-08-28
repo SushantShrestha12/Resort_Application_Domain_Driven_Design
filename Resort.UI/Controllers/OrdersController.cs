@@ -55,4 +55,17 @@ public class OrdersController: ControllerBase
         var result = await _mediator.Send(command);
         return Results.Ok(result);
     }
+    
+    [HttpGet]
+    [Route("Order/{orderId}")]
+    public async Task<IResult> ReadOrder(Guid orderId)
+    {
+        var command = new OrderReadRequest
+        {
+            OrderId = orderId
+        };
+        
+        var result = await _mediator.Send(command);
+        return Results.Ok(result);
+    }
 }

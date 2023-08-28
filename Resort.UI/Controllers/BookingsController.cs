@@ -55,11 +55,21 @@ public class BookingsController: ControllerBase
         var command = new BookingUpdateRequest()
         {
             BookingId = bookingId,
-            FirmId = booking.FirmId,
-            RoomId = booking.RoomId,
-            CustomerId = booking.CustomerId,
             DateBooked = booking.DateBooked,
             DateBookedFor = booking.DateBookedFor
+        };
+        
+        var result = await _mediator.Send(command);
+        return Results.Ok(result);
+    }
+    
+    [HttpGet]
+    [Route("Booking/{bookingId}")]
+    public async Task<IResult> ReadBooking(Guid bookingId)
+    {
+        var command = new BookingReadRequest()
+        {
+            BookingId = bookingId
         };
         
         var result = await _mediator.Send(command);

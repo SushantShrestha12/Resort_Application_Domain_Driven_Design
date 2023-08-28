@@ -32,11 +32,11 @@ public class CheckInOutLogsController: ControllerBase
         return Results.Ok(result);
     }
     
-    [HttpDelete]
-    [Route("checkInOutLogs/{historyId}")]
-    public async Task<IResult> DeleteCheckInOutLogs(Guid historyId)
+    [HttpGet]
+    [Route("CheckInOutLogs/{historyId}")]
+    public async Task<IResult> ReadCheckInOutLogs(Guid historyId)
     {
-        var command = new CheckInOutLogsDeleteRequest()
+        var command = new CheckInOutLogsReadRequest
         {
             HistoryId = historyId
         };

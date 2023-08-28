@@ -53,7 +53,7 @@ public class CustomersController: ControllerBase
     [Route("Customers/{customerId}")]
     public async Task<IResult> UpdateCustomer(Guid customerId, [FromBody] CustomerUpdate customer)
     {
-        var command = new CustomerUpdateRequest()
+        var command = new CustomerUpdateRequest
         {
             CustomerId = customerId,
             Name = customer.Name,
@@ -70,5 +70,16 @@ public class CustomersController: ControllerBase
         return Results.Ok(result);
     }
 
-    
+    [HttpGet]
+    [Route("Customer/{customerId}")]
+    public async Task<IResult> ReadCustomer(Guid customerId)
+    {
+        var command = new CustomerReadRequest
+        {
+            CustomerId = customerId
+        };
+
+        var result = await _mediator.Send(command);
+        return Results.Ok(result);
+    }
 }

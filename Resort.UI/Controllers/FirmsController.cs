@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using MediatR;
 using Resort.Application.Firms;
-using Resort.Domain.Firms;
 using Resort.UI.Contracts;
 
 [ApiController]
@@ -58,7 +57,6 @@ public class FirmsController : ControllerBase
         var command = new FirmUpdateRequest
         {
             FirmId = firmId,
-            Name = firm.Name,
             AddressLine = firm.AddressLine,
             City = firm.City,
             ContactPerson = firm.ContactPerson,
