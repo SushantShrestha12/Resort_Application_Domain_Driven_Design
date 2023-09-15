@@ -26,9 +26,9 @@ public class CheckInOutLogsHandler : IRequestHandler<CheckInOutLogsCreateRequest
     {
         Guid historyId = Guid.NewGuid();
 
-        //var rooms = _context.Firms.Select(f => f.Rooms).ToList();
-        //rooms.Where(r => r. == 1);
-        
+        // var rooms = _context.Firms.Select(f => f.Rooms).ToList();
+        // rooms.Where(r => r. == 1);
+        //
         // Guid customerId = _context.Customers.Where(c => c.Id == request.CustomerId)
         //     .Select(c => c.Id)
         //     .FirstOrDefault();
