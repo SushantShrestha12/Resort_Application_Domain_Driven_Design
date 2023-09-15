@@ -1,4 +1,4 @@
-namespace Resort.UI.Contracts;
+namespace Resort.UI.Contracts.RoomHistory;
 
 public class CheckInOutLogsCreate
 {

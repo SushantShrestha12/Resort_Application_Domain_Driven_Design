@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Resort.Application.Bookings;
 using Resort.Application.Firms;
 using Resort.UI.Contracts;
+using Resort.UI.Contracts.Bookings;
 
 namespace Resort.UI.Controllers;
 
@@ -19,7 +20,7 @@ public class BookingsController: ControllerBase
 
     [HttpPost]
     [Route("Booking/{firmId}/{roomId}/{customerId}")]
-    public async Task<IResult> CreateBooking(Guid firmId, int roomId, Guid customerId,
+    public async Task<IResult> CreateBooking(Guid firmId, Guid roomId, Guid customerId,
         [FromBody] BookingCreate booking)
     {
         var command = new BookingCreateRequest()

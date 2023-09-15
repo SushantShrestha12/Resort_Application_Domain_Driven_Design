@@ -2,6 +2,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Resort.Application.RoomHistory;
 using Resort.UI.Contracts;
+using Resort.UI.Contracts.RoomHistory;
 
 namespace Resort.UI.Controllers;
 

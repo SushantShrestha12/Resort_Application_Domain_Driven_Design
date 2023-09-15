@@ -2,6 +2,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Resort.Application.Orders;
 using Resort.UI.Contracts;
+using Resort.UI.Contracts.Orders;
 
 namespace Resort.UI.Controllers;
 
@@ -57,15 +58,9 @@ public class OrdersController: ControllerBase
     }
     
     [HttpGet]
-    [Route("Order/{orderId}")]
     public async Task<IResult> ReadOrder(Guid orderId)
     {
-        var command = new OrderReadRequest
-        {
-            OrderId = orderId
-        };
-        
-        var result = await _mediator.Send(command);
+        var result = await _mediator.Send(new GetAllOrderRequest());
         return Results.Ok(result);
     }
 }

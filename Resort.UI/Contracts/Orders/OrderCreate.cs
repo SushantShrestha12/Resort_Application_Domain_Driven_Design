@@ -1,6 +1,4 @@
-using Resort.Domain.Orders;
-
-namespace Resort.UI.Contracts;
+namespace Resort.UI.Contracts.Orders;
 
 public class OrderCreate
 {

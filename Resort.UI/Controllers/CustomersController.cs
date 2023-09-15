@@ -2,6 +2,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Resort.Application.Firms;
 using Resort.UI.Contracts;
+using Resort.UI.Contracts.Customers;
 
 namespace Resort.UI.Controllers;
 
@@ -17,8 +18,7 @@ public class CustomersController: ControllerBase
     }
 
     [HttpPost]
-    [Route("Customers")]
-    public async Task<IResult> CreateCustomer(Guid firmId, [FromBody] CustomerCreate customer)
+    public async Task<IResult> CreateCustomer([FromBody] CustomerCreate customer)
     {
         var command = new CustomerCreateRequest()
         {
@@ -71,15 +71,9 @@ public class CustomersController: ControllerBase
     }
 
     [HttpGet]
-    [Route("Customer/{customerId}")]
-    public async Task<IResult> ReadCustomer(Guid customerId)
+    public async Task<IResult> GetCustomers()
     {
-        var command = new CustomerReadRequest
-        {
-            CustomerId = customerId
-        };
-
-        var result = await _mediator.Send(command);
+        var result = await _mediator.Send(new GetAllCustomersRequest());
         return Results.Ok(result);
     }
 }

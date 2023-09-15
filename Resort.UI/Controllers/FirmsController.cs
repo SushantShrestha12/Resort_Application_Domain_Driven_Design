@@ -1,7 +1,11 @@
-using Microsoft.AspNetCore.Mvc;
 using MediatR;
+using Microsoft.AspNetCore.Mvc;
 using Resort.Application.Firms;
+using Resort.Application.Orders;
 using Resort.UI.Contracts;
+using Resort.UI.Contracts.Firms;
+
+namespace Resort.UI.Controllers;
 
 [ApiController]
 [Route("[controller]")]
@@ -73,15 +77,9 @@ public class FirmsController : ControllerBase
     }
 
     [HttpGet]
-    [Route("Firm")]
     public async Task<IResult> ReadFirm(Guid firmId)
     {
-        var command = new FirmReadRequest
-        {
-            FirmId = firmId
-        };
-        
-        var result = await _mediator.Send(command);
+        var result = await _mediator.Send(new GetAllFirmRequest());
         return Results.Ok(result);
     }
 }

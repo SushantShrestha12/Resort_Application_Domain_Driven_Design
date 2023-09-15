@@ -1,6 +1,6 @@
 using Resort.Domain;
 
-namespace Resort.UI.Contracts;
+namespace Resort.UI.Contracts.Firms;
 
 public class RoomCreate
 {

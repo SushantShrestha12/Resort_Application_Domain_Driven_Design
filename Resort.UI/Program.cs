@@ -1,4 +1,3 @@
-
 using Microsoft.EntityFrameworkCore;
 using Resort.Application.Firms;
 using Resort.Infrastructure;
@@ -8,13 +7,21 @@ var cs = builder.Configuration.GetConnectionString("ResortContext");
 builder.Services.AddDbContext<ResortDbContext>(options => options.UseMySql(cs, ServerVersion.AutoDetect(cs)));
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(FirmCreateRequestHandler).Assembly));
 
-builder.Services.AddControllers(); 
+builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-var app = builder.Build();
+builder.Services.AddCors();
 
+var app = builder.Build();
+app.UseCors(
+    options =>
+    {
+        options.AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowAnyOrigin();
+    });
 app.UseSwagger();
 app.UseSwaggerUI();
 

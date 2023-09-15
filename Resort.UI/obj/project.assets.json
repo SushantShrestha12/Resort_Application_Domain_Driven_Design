@@ -4329,11 +4329,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/sushantshrestha/Desktop/Resort1/Resort.UI/Resort.UI.csproj",
+      "projectUniqueName": "/Users/sushantshrestha/RiderProjects/Resort_Application_Domain_Driven_Design/Resort.UI/Resort.UI.csproj",
       "projectName": "Resort.UI",
-      "projectPath": "/Users/sushantshrestha/Desktop/Resort1/Resort.UI/Resort.UI.csproj",
+      "projectPath": "/Users/sushantshrestha/RiderProjects/Resort_Application_Domain_Driven_Design/Resort.UI/Resort.UI.csproj",
       "packagesPath": "/Users/sushantshrestha/.nuget/packages/",
-      "outputPath": "/Users/sushantshrestha/Desktop/Resort1/Resort.UI/obj/",
+      "outputPath": "/Users/sushantshrestha/RiderProjects/Resort_Application_Domain_Driven_Design/Resort.UI/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/Users/sushantshrestha/.nuget/NuGet/NuGet.Config"
@@ -4349,11 +4349,11 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "projectReferences": {
-            "/Users/sushantshrestha/Desktop/Resort1/Resort.Application/Resort.Application.csproj": {
-              "projectPath": "/Users/sushantshrestha/Desktop/Resort1/Resort.Application/Resort.Application.csproj"
+            "/Users/sushantshrestha/RiderProjects/Resort_Application_Domain_Driven_Design/Resort.Application/Resort.Application.csproj": {
+              "projectPath": "/Users/sushantshrestha/RiderProjects/Resort_Application_Domain_Driven_Design/Resort.Application/Resort.Application.csproj"
             },
-            "/Users/sushantshrestha/Desktop/Resort1/Resort.Infrastructure/Resort.Infrastructure.csproj": {
-              "projectPath": "/Users/sushantshrestha/Desktop/Resort1/Resort.Infrastructure/Resort.Infrastructure.csproj"
+            "/Users/sushantshrestha/RiderProjects/Resort_Application_Domain_Driven_Design/Resort.Infrastructure/Resort.Infrastructure.csproj": {
+              "projectPath": "/Users/sushantshrestha/RiderProjects/Resort_Application_Domain_Driven_Design/Resort.Infrastructure/Resort.Infrastructure.csproj"
             }
           }
         }

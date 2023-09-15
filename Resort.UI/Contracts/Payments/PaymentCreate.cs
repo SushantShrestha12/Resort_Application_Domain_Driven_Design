@@ -1,11 +1,11 @@
-namespace Resort.UI.Contracts;
+namespace Resort.UI.Contracts.Payments;
 
 public class PaymentCreate
 {
-    public string Date { get;  set; }
-    public string Price { get;  set; }
-    public string Total { get;  set; }
-    public string Discount { get;  set; }
-    public string GrandTotal { get;  set; }
+    public DateTime Date { get;  set; }
+    public decimal Price { get;  set; }
+    public decimal Total { get;  set; }
+    public decimal Discount { get;  set; }
+    public decimal GrandTotal { get;  set; }
 }
 

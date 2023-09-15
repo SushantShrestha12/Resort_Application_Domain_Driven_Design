@@ -1,6 +1,6 @@
-namespace Resort.UI.Contracts;
+namespace Resort.UI.Contracts.Bookings;
 
-public sealed class BookingCreate
+public class BookingCreate
 {
     public DateTime DateBooked { get; set; }
     public DateTime DateBookedFor { get; set; }

@@ -2,6 +2,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Resort.Application.Firms;
 using Resort.UI.Contracts;
+using Resort.UI.Contracts.Firms;
 
 namespace Resort.UI.Controllers;
 
