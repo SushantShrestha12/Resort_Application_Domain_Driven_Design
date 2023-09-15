@@ -17,4 +17,5 @@ public record OrderLineItem
         Price = price;
         Total = Quantity * Price.Amount;
     }
+    
 }

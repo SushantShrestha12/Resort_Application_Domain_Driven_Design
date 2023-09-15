@@ -12,12 +12,12 @@ public class Order : AggregateRoot<Guid>
     public Guid FirmId { get; private set; }
     public decimal Total { get; private set; }
     public bool Paid { get; private set; }
+    public decimal GrandTotal { get; set; }
     
     private readonly List<OrderLineItem> _orderDetails = new();
     public IReadOnlyCollection<OrderLineItem> OrderDetails => _orderDetails;
     
-    public Order(Guid id, Guid customerId, Guid firmId, DateOnly date) 
-        : base(id)
+    public Order(Guid id, Guid customerId, Guid firmId, DateOnly date) : base(id)
     {
         CustomerId = customerId;
         FirmId = firmId;
@@ -34,5 +34,4 @@ public class Order : AggregateRoot<Guid>
     {
         Total = orders.Sum(x => x.Total);
     }
-    
 }

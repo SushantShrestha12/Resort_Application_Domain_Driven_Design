@@ -1,5 +1,4 @@
-﻿using System;
-namespace Resort.Domain.SharedKernel
+﻿namespace Resort.Domain.SharedKernel
 {
 	public abstract class AggregateRoot<TId>: BaseEntity<TId>
 	{

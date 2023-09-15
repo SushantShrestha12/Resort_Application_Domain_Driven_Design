@@ -12,8 +12,8 @@ public class CheckInOutLogs : AggregateRoot<Guid>
     public string RoomNo { get; private set; }
     public Guid CustomerId { get; private set; }
     public DateTime CheckInDate { get; private set; }
-    public DateTime? CheckOutDate { get; private set; }
-
+    public DateTime CheckOutDate { get; private set; }
+    public decimal GrandTotal { get; set; }
     public CheckInOutLogs(Guid id, string roomNo, Guid customerId, DateTime checkInDate,
         DateTime checkOutDate) : base(id)
     {
@@ -22,12 +22,17 @@ public class CheckInOutLogs : AggregateRoot<Guid>
         CheckInDate = checkInDate;
         CheckOutDate = checkOutDate;
     }
-
-    public void CheckAvailability(Room room)
+    
+    public void SetGrandTotal(decimal grandTotal)
     {
-        if (CheckOutDate == null)
-        {
-            room.SetRoomAvailability(false);
-        }
+        GrandTotal = grandTotal;
     }
+
+    // public void CheckAvailability(Room room)
+    // {
+    //     if (CheckOutDate == null)
+    //     {
+    //         room.SetRoomAvailability(false);
+    //     }
+    // }
 }

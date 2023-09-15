@@ -2573,11 +2573,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/sushantshrestha/Desktop/Resort1/Resort.Domain/Resort.Domain.csproj",
+      "projectUniqueName": "/Users/sushantshrestha/RiderProjects/Resort_Application_Domain_Driven_Design/Resort.Domain/Resort.Domain.csproj",
       "projectName": "Resort.Domain",
-      "projectPath": "/Users/sushantshrestha/Desktop/Resort1/Resort.Domain/Resort.Domain.csproj",
+      "projectPath": "/Users/sushantshrestha/RiderProjects/Resort_Application_Domain_Driven_Design/Resort.Domain/Resort.Domain.csproj",
       "packagesPath": "/Users/sushantshrestha/.nuget/packages/",
-      "outputPath": "/Users/sushantshrestha/Desktop/Resort1/Resort.Domain/obj/",
+      "outputPath": "/Users/sushantshrestha/RiderProjects/Resort_Application_Domain_Driven_Design/Resort.Domain/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/Users/sushantshrestha/.nuget/NuGet/NuGet.Config"

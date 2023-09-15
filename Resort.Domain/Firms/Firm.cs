@@ -6,7 +6,7 @@ public class Firm : AggregateRoot<Guid>
 {
     private Firm()
     {
-
+    
     }
 
     public Firm(Guid id, string name, Address address, Contact contact)
@@ -32,21 +32,15 @@ public class Firm : AggregateRoot<Guid>
     
     public IReadOnlyCollection<FoodMenu> Foods => _foodMenus;
 
-    public void AddRoom( string roomNumber, RoomTypes roomType, Features features,
+    public void AddRoom(Guid roomId, string roomNumber, RoomTypes roomType, Features features,
         Rates rate)
     {
-        _rooms.Add(new Room(roomNumber, roomType, features, rate));
+        _rooms.Add(new Room(roomId, roomNumber, roomType, features, rate));
     }
-
-    public Room? GetRoomById(IReadOnlyCollection<Room> rooms, string roomNumber)
-    {
-        return rooms.FirstOrDefault(r => r.Number == roomNumber);
-    }
-    
-    public void RemoveRoom(string roomNumber, RoomTypes roomType, Features features,
+    public void RemoveRoom(Guid roomId, string roomNumber, RoomTypes roomType, Features features,
         Rates rate)
     {
-        _rooms.Remove(new Room( roomNumber, roomType, features, rate));
+        _rooms.Remove(new Room(roomId, roomNumber, roomType, features, rate));
     }
     public void AddFoodMenu(string foodName, Rates price, int quantity, FoodType type)
     {

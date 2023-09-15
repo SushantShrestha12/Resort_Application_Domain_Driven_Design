@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "GMIm8e1y82iSYSP2c/5sdRYY6+nd7K6dV4JPXLsP1Bs0qWvnmMCvir9q/1gPWRmghVzbK0lz1BS7LYqbqadQvQ==",
+  "dgSpecHash": "8etGbal53AW3es44vpfR9l3abHj8wM684eOMku8eZ3JrF0ztZFcyR5M7rpu7LHvOf1w0ztW/j+ulykudTIEQIw==",
   "success": true,
-  "projectFilePath": "/Users/sushantshrestha/Desktop/Resort1/Resort.Domain/Resort.Domain.csproj",
+  "projectFilePath": "/Users/sushantshrestha/RiderProjects/Resort_Application_Domain_Driven_Design/Resort.Domain/Resort.Domain.csproj",
   "expectedPackageFiles": [
     "/Users/sushantshrestha/.nuget/packages/dapper/2.0.143/dapper.2.0.143.nupkg.sha512",
     "/Users/sushantshrestha/.nuget/packages/google.protobuf/3.21.9/google.protobuf.3.21.9.nupkg.sha512",
