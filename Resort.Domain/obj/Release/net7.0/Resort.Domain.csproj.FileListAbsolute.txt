@@ -1,0 +1,12 @@
+/Users/sushantshrestha/Projects/Resort/Resort.Domain/bin/Release/net7.0/Resort.Domain.deps.json
+/Users/sushantshrestha/Projects/Resort/Resort.Domain/bin/Release/net7.0/Resort.Domain.dll
+/Users/sushantshrestha/Projects/Resort/Resort.Domain/bin/Release/net7.0/Resort.Domain.pdb
+/Users/sushantshrestha/Projects/Resort/Resort.Domain/obj/Release/net7.0/Resort.Domain.csproj.AssemblyReference.cache
+/Users/sushantshrestha/Projects/Resort/Resort.Domain/obj/Release/net7.0/Resort.Domain.GeneratedMSBuildEditorConfig.editorconfig
+/Users/sushantshrestha/Projects/Resort/Resort.Domain/obj/Release/net7.0/Resort.Domain.AssemblyInfoInputs.cache
+/Users/sushantshrestha/Projects/Resort/Resort.Domain/obj/Release/net7.0/Resort.Domain.AssemblyInfo.cs
+/Users/sushantshrestha/Projects/Resort/Resort.Domain/obj/Release/net7.0/Resort.Domain.csproj.CoreCompileInputs.cache
+/Users/sushantshrestha/Projects/Resort/Resort.Domain/obj/Release/net7.0/Resort.Domain.dll
+/Users/sushantshrestha/Projects/Resort/Resort.Domain/obj/Release/net7.0/refint/Resort.Domain.dll
+/Users/sushantshrestha/Projects/Resort/Resort.Domain/obj/Release/net7.0/Resort.Domain.pdb
+/Users/sushantshrestha/Projects/Resort/Resort.Domain/obj/Release/net7.0/ref/Resort.Domain.dll
