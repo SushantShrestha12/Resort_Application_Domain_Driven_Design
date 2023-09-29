@@ -1,20 +1,44 @@
 using Microsoft.AspNetCore.Mvc;
-using Resort.Domain;
+using Microsoft.EntityFrameworkCore;
+using Resort.Infrastructure;
 
-namespace Resort.UI.Controllers;
-
-[ApiController]
-[Route("[controller]")]
-public class LogoutController: ControllerBase
+namespace Resort.UI.Controllers
 {
-    // private const string AccessSecretKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiI1YzU0ZjMzNi1kNGZmLTRmY2QtYTFkZi0zNzU2NWY5NzAwMmYiLCJ1bmlxdWVfbmFtZSI6IlN1c2hhbnQiLCJlbWFpbCI6IlN1c2hhbnQiLCJqdGkiOiJiZDQxZjhmMS1hYzkwLTRkZTMtYjBiMy1mNDc3N2JhZDUyMDMiLCJuYmYiOjE2OTUzODIzNjQsImV4cCI6MTY5NTM4Mjk2NCwiaWF0IjoxNjk1MzgyMzY0LCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjUxOTQiLCJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjUxOTQifQ.qLslxPCZQHbsXiRNnbLsIbhxj6ZPIYCH3eFwYhfiOis";
-
-    
-    [HttpPost]
-    public async Task<bool> Logout()
+    [ApiController]
+    [Route("[controller]")]
+    public class LogoutController : ControllerBase
     {
-        // TokenBlackList tokenBlackList = new TokenBlackList();
-        // tokenBlackList.BlacklistToken(AccessSecretKey);
-        return true;
+        private readonly ResortDbContext _context;
+        private readonly ISession _session;
+        private IHttpContextAccessor _httpContextAccessor;
+
+
+        public LogoutController(ResortDbContext context, IHttpContextAccessor httpContextAccessor)
+        {
+            _context = context;
+            _session = httpContextAccessor.HttpContext.Session;
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Logout()
+        {
+            var username = _session.GetString("Username");
+            
+            var accessToken = await _context.AccessTokens
+                .Where(token => token.Username == username)
+                .FirstOrDefaultAsync();
+
+            if (accessToken == null)
+            {
+                return BadRequest();
+            }
+
+            _context.AccessTokens.Remove(accessToken);
+            await _context.SaveChangesAsync();
+            
+            _session.Remove("Username");
+            _session.Clear();
+            return Ok();
+        }
     }
 }

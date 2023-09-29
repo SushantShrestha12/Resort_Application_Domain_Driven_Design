@@ -1,6 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Resort.Application.Firms;
+using Resort.Application.Orders;
+using Resort.Infrastructure;
 using Resort.UI.Contracts;
 
 [ApiController]
@@ -8,14 +11,15 @@ using Resort.UI.Contracts;
 public class FirmsController : ControllerBase
 {
     private readonly IMediator _mediator;
-
-    public FirmsController(IMediator mediator)
+    private readonly ResortDbContext _context;
+    
+    public FirmsController(IMediator mediator, ResortDbContext context)
     {
+        _context = context;
         _mediator = mediator;
     }
 
     [HttpPost]
-    [Route("Firm")]
     public async Task<IResult> CreateFirm([FromBody] FirmCreate firm)
     {
         var command = new FirmCreateRequest
@@ -76,12 +80,7 @@ public class FirmsController : ControllerBase
     [Route("Firm")]
     public async Task<IResult> ReadFirm(Guid firmId)
     {
-        var command = new FirmReadRequest
-        {
-            FirmId = firmId
-        };
-        
-        var result = await _mediator.Send(command);
+        var result = await _mediator.Send(new GetAllFirmRequest());
         return Results.Ok(result);
     }
 }

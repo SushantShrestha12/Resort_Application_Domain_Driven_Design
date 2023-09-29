@@ -1,7 +1,12 @@
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Resort.Application.Firms;
+using Resort.Infrastructure;
 using Resort.UI.Contracts;
 
 namespace Resort.UI.Controllers;
@@ -9,50 +14,67 @@ namespace Resort.UI.Controllers;
 [Authorize]
 [ApiController]
 [Route("[controller]")]
-public class CustomersController: ControllerBase
+public class CustomersController : ControllerBase
 {
     private readonly IMediator _mediator;
+    private readonly ResortDbContext _context;
+    private readonly ISession _session;
 
-    public CustomersController(IMediator mediator)
+    public CustomersController(IMediator mediator, ResortDbContext context, IHttpContextAccessor httpContextAccessor)
     {
+        _context = context;
         _mediator = mediator;
+        _session = httpContextAccessor.HttpContext.Session;
     }
 
     [HttpPost]
-    [Route("Customers")]
-    public async Task<IResult> CreateCustomer(Guid firmId, [FromBody] CustomerCreate customer)
+    public async Task<IResult> CreateCustomer([FromBody] CustomerCreate customer)
     {
-        var command = new CustomerCreateRequest()
+        var username = _session.GetString("Username");
+
+        if (username == null)
         {
-            Name = customer.Name,
-            Province = customer.Province,
-            City = customer.City,
-            Municipality = customer.Municipality,
-            AddressLine = customer.AddressLine,
-            WardNumber = customer.WardNumber,
-            MobileNumber = customer.MobileNumber,
-            Email = customer.Email
-        };
-        
-        var result = await _mediator.Send(command);
-        return Results.Ok(result);
+            throw new Exception("You have to login first.");
+        }
+
+        var accessToken = await _context.AccessTokens
+            .Where(token => token.Username == username)
+            .FirstOrDefaultAsync();
+
+        if (accessToken?.AccExpires > DateTime.Now)
+        {
+            var command = new CustomerCreateRequest()
+            {
+                Name = customer.Name,
+                Province = customer.Province,
+                City = customer.City,
+                Municipality = customer.Municipality,
+                AddressLine = customer.AddressLine,
+                WardNumber = customer.WardNumber,
+                MobileNumber = customer.MobileNumber,
+                Email = customer.Email
+            };
+
+            var result = await _mediator.Send(command);
+            return Results.Ok(result);
+        }
+
+        return Results.BadRequest("Token Expired");
     }
-    
+
     [HttpDelete]
-    [Route("Customers/{customerId}")]
     public async Task<IResult> DeleteCustomer(Guid customerId, [FromBody] CustomerDelete customer)
     {
         var command = new CustomerDeleteRequest()
         {
             CustomerId = customerId
         };
-        
+
         var result = await _mediator.Send(command);
         return Results.Ok(result);
     }
-    
+
     [HttpPut]
-    [Route("Customers/{customerId}")]
     public async Task<IResult> UpdateCustomer(Guid customerId, [FromBody] CustomerUpdate customer)
     {
         var command = new CustomerUpdateRequest
@@ -67,21 +89,15 @@ public class CustomersController: ControllerBase
             MobileNumber = customer.MobileNumber,
             Email = customer.Email
         };
-        
+
         var result = await _mediator.Send(command);
         return Results.Ok(result);
     }
 
     [HttpGet]
-    [Route("Customer/{customerId}")]
-    public async Task<IResult> ReadCustomer(Guid customerId)
+    public async Task<IResult> ReadCustomer()
     {
-        var command = new CustomerReadRequest
-        {
-            CustomerId = customerId
-        };
-
-        var result = await _mediator.Send(command);
+        var result = await _mediator.Send(new GetAllCustomersRequest());
         return Results.Ok(result);
     }
 }
