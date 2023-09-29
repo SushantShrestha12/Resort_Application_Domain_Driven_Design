@@ -8,6 +8,7 @@ using Resort.Domain.LandingPages;
 using Resort.Domain.Orders;
 using Resort.Domain.RoomHistory;
 using Resort.Domain.Rooms;
+using Resort.Domain.Token;
 using Document = Resort.Domain.Document.Document;
 
 namespace Resort.Infrastructure
@@ -32,6 +33,8 @@ namespace Resort.Infrastructure
         public DbSet<Room> Rooms { get; set; }
         public DbSet<CheckInDetail> CheckInDetails { get; set; }
         public DbSet<CheckOutDetail> CheckOutDetails { get; set; }
+        
+        public DbSet<AccessToken> AccessTokens { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
