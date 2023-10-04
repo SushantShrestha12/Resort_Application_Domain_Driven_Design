@@ -3,12 +3,13 @@ using System.Security.Claims;
 using System.Text;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Resort.Application.Orders;
 using Resort.Application.Tokens;
 using Resort.Infrastructure;
 using Resort.UI.Contracts.Authorization;
-// using ISession = Microsoft.AspNetCore.Http.ISession;
+using Resort.UI.Contracts.Tokens;
 
 namespace Resort.UI.Controllers;
 
@@ -16,7 +17,7 @@ namespace Resort.UI.Controllers;
 [Route("[controller]")]
 public class LoginController : ControllerBase
 {
-    private const string AccessSecretKey =
+    private const string AccessSecretKey = 
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IlN1c2hhbnQgU2hyZXN0aGEiLCJpYXQiOjE1MTYyMzkwMjJ9.cHZ8sR2WJY7W5ciBOBgz4joxTe7yUrnxzgOY-uP9I7g";
 
     private readonly SymmetricSecurityKey _accessSigningKey =
@@ -29,15 +30,14 @@ public class LoginController : ControllerBase
         new SymmetricSecurityKey(Encoding.ASCII.GetBytes(RefreshSecretKey));
 
     private readonly IMediator _mediator;
-    private readonly ResortDbContext _dbContext;
+    private readonly ResortDbContext _context;
     private readonly ISession _session;
-    // private IHttpContextAccessor _httpContextAccessor;
 
 
-    public LoginController(IMediator mediator, ResortDbContext dbContext, IHttpContextAccessor httpContextAccessor)
+    public LoginController(IMediator mediator, ResortDbContext context, IHttpContextAccessor httpContextAccessor)
     {
         _mediator = mediator;
-        _dbContext = dbContext;
+        _context = context;
         _session = httpContextAccessor.HttpContext.Session;
     }
 
@@ -54,9 +54,10 @@ public class LoginController : ControllerBase
                 {
                     new Claim(ClaimTypes.NameIdentifier, Guid.NewGuid().ToString()),
                     new Claim(ClaimTypes.Name, login.username),
+                    new Claim(JwtRegisteredClaimNames.Email, login.username),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
                 }),
-                Expires = DateTime.Now.AddMinutes(10),
+                Expires = DateTime.UtcNow.AddMinutes(30),
                 Issuer = "http://localhost:5194",
                 Audience = "http://localhost:5194",
                 SigningCredentials =
@@ -72,7 +73,7 @@ public class LoginController : ControllerBase
                     new Claim(JwtRegisteredClaimNames.Email, login.username),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 }),
-                Expires = DateTime.Now.AddMinutes(43200),
+                Expires = DateTime.UtcNow.AddMinutes(43200),
                 Issuer = "http://localhost:5194",
                 Audience = "http://localhost:5194",
                 SigningCredentials =
@@ -96,8 +97,22 @@ public class LoginController : ControllerBase
                 RefreshToken = refreshTokenString,
                 RefreshExpires = (DateTime)refreshTokenDescriptor.Expires
             };
+            var username = _session.GetString("Username");
 
-            await _mediator.Send(command);
+            var accessToken1 = await _context.AccessTokens
+                .Where(token => token.Username == username)
+                .FirstOrDefaultAsync();
+
+            if (accessToken1 != null)
+            {
+                _context.AccessTokens.Remove(accessToken1);
+                await _context.SaveChangesAsync();
+                await _mediator.Send(command);
+            }
+            else
+            {
+                await _mediator.Send(command);
+            }
 
             var response = new
             {
@@ -115,8 +130,8 @@ public class LoginController : ControllerBase
 
     private bool IsValidUser(string username, string password)
     {
-        var user = _dbContext.SignUps.Any(u => u.Username == username);
-        var pass = _dbContext.SignUps.Any(u => u.Password == password);
+        var user = _context.SignUps.Any(u => u.Username == username);
+        var pass = _context.SignUps.Any(u => u.Password == password);
 
         return user && pass;
     }

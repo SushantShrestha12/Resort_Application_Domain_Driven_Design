@@ -1,12 +1,11 @@
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Resort.Application.Firms;
 using Resort.Infrastructure;
+using Resort.UI.Contracts.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 var cs = builder.Configuration.GetConnectionString("ResortContext");
@@ -15,24 +14,24 @@ builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(Fir
 
 builder.Services.AddControllers();
 
-var nepalTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Nepal Standard Time");
-builder.Services.AddSingleton(nepalTimeZone);
+builder.Services.AddScoped<AccessTokenExpireCheck>();
 
 builder.Services.AddHttpContextAccessor();
 
-builder.Services.AddEndpointsApiExplorer();
+// builder.Services.AddEndpointsApiExplorer();
 
-builder.Services.AddIdentity<IdentityUser, IdentityRole>()
-    .AddEntityFrameworkStores<ResortDbContext>();
+// builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+//     .AddEntityFrameworkStores<ResortDbContext>();
 
 builder.Services.AddDistributedMemoryCache();
 
-builder.Services.AddSession(options =>
-{
-    options.IdleTimeout = TimeSpan.FromMinutes(15); 
+builder.Services.AddSession(
+    options => {
+    options.IdleTimeout = TimeSpan.FromMinutes(15);
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
-});
+    options.Cookie.Name = ".Resort.Session"; }
+    );
 
 builder.Services.AddSwaggerGen(c =>
 {
@@ -44,12 +43,12 @@ builder.Services.AddSwaggerGen(c =>
 
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
+        Name = "Authorization",
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer",
+        BearerFormat = "JWT",
         In = ParameterLocation.Header,
         Description = "Please enter into field the word 'Bearer' following by space and JWT",
-        Name = "Authorization",
-        Type = SecuritySchemeType.Http,
-        BearerFormat = "JWT",
-        Scheme = "bearer"
     });
     c.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
@@ -67,6 +66,7 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
+var secretKey = builder.Configuration["JwtSettings:AccessToken"] ?? "";
 builder.Services.AddAuthentication(options =>
     {
         options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -77,13 +77,14 @@ builder.Services.AddAuthentication(options =>
     {
         options.TokenValidationParameters = new TokenValidationParameters
         {
-            ValidateIssuer = true,
-            ValidateAudience = true,
-            ValidateIssuerSigningKey = true,
             ValidIssuer = builder.Configuration["JwtSettings:Issuer"],
             ValidAudience = builder.Configuration["JwtSettings:Issuer"],
             IssuerSigningKey =
-                new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:Access Token"]))
+                new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey)),
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = false,
+            ValidateIssuerSigningKey = true,
         };
     });
 
@@ -95,6 +96,14 @@ builder.Services.AddAuthorization(option =>
 
 var app = builder.Build();
 
+app.UseSession();
+app.UseAuthentication();
+app.UseAuthorization();
+
+
+app.UseSwagger();
+app.UseSwaggerUI();
+
 app.UseCors(
     options =>
     {
@@ -103,16 +112,6 @@ app.UseCors(
             .AllowAnyOrigin();
     });
 
-app.UseSession();
 
-app.UseSwagger();
-app.UseSwaggerUI();
-    
-app.UseCors();
-    
 app.MapControllers();
-
-app.UseAuthentication();
-app.UseAuthorization();
-
 app.Run();

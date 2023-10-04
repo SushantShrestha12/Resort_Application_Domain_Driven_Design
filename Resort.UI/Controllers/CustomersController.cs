@@ -1,13 +1,9 @@
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Resort.Application.Firms;
-using Resort.Infrastructure;
 using Resort.UI.Contracts;
+using Resort.UI.Contracts.Tokens;
 
 namespace Resort.UI.Controllers;
 
@@ -17,15 +13,18 @@ namespace Resort.UI.Controllers;
 public class CustomersController : ControllerBase
 {
     private readonly IMediator _mediator;
-    private readonly ResortDbContext _context;
     private readonly ISession _session;
+    private readonly AccessTokenExpireCheck _accessTokenExpireCheck;
 
-    public CustomersController(IMediator mediator, ResortDbContext context, IHttpContextAccessor httpContextAccessor)
+
+    public CustomersController(IMediator mediator, IHttpContextAccessor httpContextAccessor,
+        AccessTokenExpireCheck accessTokenExpireCheck)
     {
-        _context = context;
         _mediator = mediator;
         _session = httpContextAccessor.HttpContext.Session;
+        _accessTokenExpireCheck = accessTokenExpireCheck;
     }
+    
 
     [HttpPost]
     public async Task<IResult> CreateCustomer([FromBody] CustomerCreate customer)
@@ -37,11 +36,9 @@ public class CustomersController : ControllerBase
             throw new Exception("You have to login first.");
         }
 
-        var accessToken = await _context.AccessTokens
-            .Where(token => token.Username == username)
-            .FirstOrDefaultAsync();
+        var tokenNotExpired = await _accessTokenExpireCheck.IsAccessTokenExpired();
 
-        if (accessToken?.AccExpires > DateTime.Now)
+        if (tokenNotExpired)
         {
             var command = new CustomerCreateRequest()
             {
@@ -77,27 +74,53 @@ public class CustomersController : ControllerBase
     [HttpPut]
     public async Task<IResult> UpdateCustomer(Guid customerId, [FromBody] CustomerUpdate customer)
     {
-        var command = new CustomerUpdateRequest
+        var username = _session.GetString("Username");
+        if (username == null)
         {
-            CustomerId = customerId,
-            Name = customer.Name,
-            Province = customer.Province,
-            City = customer.City,
-            Municipality = customer.Municipality,
-            AddressLine = customer.AddressLine,
-            WardNumber = customer.WardNumber,
-            MobileNumber = customer.MobileNumber,
-            Email = customer.Email
-        };
+            throw new Exception("You have to login first.");
+        }
 
-        var result = await _mediator.Send(command);
-        return Results.Ok(result);
+        var tokenNotExpired = await _accessTokenExpireCheck.IsAccessTokenExpired();
+
+        if (tokenNotExpired)
+        {
+            var command = new CustomerUpdateRequest
+            {
+                CustomerId = customerId,
+                Name = customer.Name,
+                Province = customer.Province,
+                City = customer.City,
+                Municipality = customer.Municipality,
+                AddressLine = customer.AddressLine,
+                WardNumber = customer.WardNumber,
+                MobileNumber = customer.MobileNumber,
+                Email = customer.Email
+            };
+
+            var result = await _mediator.Send(command);
+            return Results.Ok(result);
+        }
+        return Results.BadRequest("Token Expired");
+
     }
 
     [HttpGet]
     public async Task<IResult> ReadCustomer()
     {
-        var result = await _mediator.Send(new GetAllCustomersRequest());
-        return Results.Ok(result);
+        // var username = _session.GetString("Username");
+
+        // if (username == null)
+        // {
+        //     throw new Exception("You have to login first.");
+        // }
+        
+        var tokenNotExpired = await _accessTokenExpireCheck.IsAccessTokenExpired();
+        
+        if (tokenNotExpired)
+        {
+            var result = await _mediator.Send(new GetAllCustomersRequest());
+            return Results.Ok(result);
+        }
+        return Results.BadRequest("Token Expired");
     }
 }
