@@ -25,9 +25,4 @@ public class AccessToken: AggregateRoot<Guid>
         RefreshExpires = refreshExpires;
     }
     
-    public void setAccExpire(DateTime accExpire)
-    {
-        AccExpires = accExpire;
-    }
-    
 }
