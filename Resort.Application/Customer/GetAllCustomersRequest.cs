@@ -21,6 +21,6 @@ public class GetAllCustomerRequestHandler : IRequestHandler<GetAllCustomersReque
     
     public async Task<List<Customer>> Handle(GetAllCustomersRequest request, CancellationToken cancellationToken)
     {
-        return await _context.Customers.ToListAsync();
+        return await _context.Customers.ToListAsync(cancellationToken);
     }
 }
