@@ -10,8 +10,6 @@ namespace Resort.UI.Controllers
     {
         private readonly ResortDbContext _context;
         private readonly ISession _session;
-        private IHttpContextAccessor _httpContextAccessor;
-
 
         public LogoutController(ResortDbContext context, IHttpContextAccessor httpContextAccessor)
         {

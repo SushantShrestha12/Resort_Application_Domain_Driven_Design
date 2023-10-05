@@ -1,27 +1,33 @@
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Resort.Application.Orders;
 using Resort.UI.Contracts;
+using Resort.UI.Contracts.Tokens;
 
 namespace Resort.UI.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("[controller]")]
-public class OrdersController: ControllerBase
+public class OrdersController : ControllerBase
 {
     private readonly IMediator _mediator;
+    private readonly AccessTokenExpireCheck _accessTokenExpireCheck;
 
-    public OrdersController(IMediator mediator)
+    public OrdersController(IMediator mediator, AccessTokenExpireCheck accessTokenExpireCheck)
     {
         _mediator = mediator;
+        _accessTokenExpireCheck = accessTokenExpireCheck;
     }
 
     [HttpPost]
-    [Route("orders")]
     public async Task<IResult> CreateOrders([FromBody] OrderCreate order)
     {
-        List<OrderLineItemCreateRequest> orderLineItems = new List<OrderLineItemCreateRequest>();
+        var tokenNotExpired = await _accessTokenExpireCheck.IsAccessTokenExpired();
+        if (!tokenNotExpired) return Results.BadRequest("Token Expired");
 
+        List<OrderLineItemCreateRequest> orderLineItems = new List<OrderLineItemCreateRequest>();
 
         orderLineItems = order.OrderLineItems.Select(o => new OrderLineItemCreateRequest()
         {
@@ -38,34 +44,31 @@ public class OrdersController: ControllerBase
             Date = order.Date,
             OrderLineItems = orderLineItems
         };
-        
+
         var result = await _mediator.Send(command);
         return Results.Ok(result);
     }
-    
+
     [HttpDelete]
-    [Route("orders/{orderId}")]
     public async Task<IResult> DeleteOrders(Guid orderId, [FromBody] OrderDelete order)
     {
         var command = new OrderDeleteRequest()
         {
             OrderId = orderId
         };
-        
+
         var result = await _mediator.Send(command);
         return Results.Ok(result);
     }
-    
+
     [HttpGet]
-    [Route("Order/{orderId}")]
-    public async Task<IResult> ReadOrder(Guid orderId)
+    public async Task<IResult> ReadOrder()
     {
-        var command = new OrderReadRequest
-        {
-            OrderId = orderId
-        };
-        
-        var result = await _mediator.Send(command);
+        var tokenNotExpired = await _accessTokenExpireCheck.IsAccessTokenExpired();
+
+        if (!tokenNotExpired) return Results.BadRequest("Token Expired");
+
+        var result = await _mediator.Send(new GetAllOrderRequest());
         return Results.Ok(result);
     }
 }

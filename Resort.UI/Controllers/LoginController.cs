@@ -9,7 +9,6 @@ using Resort.Application.Orders;
 using Resort.Application.Tokens;
 using Resort.Infrastructure;
 using Resort.UI.Contracts.Authorization;
-using Resort.UI.Contracts.Tokens;
 
 namespace Resort.UI.Controllers;
 
@@ -57,7 +56,7 @@ public class LoginController : ControllerBase
                     new Claim(JwtRegisteredClaimNames.Email, login.username),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
                 }),
-                Expires = DateTime.UtcNow.AddMinutes(30),
+                Expires = DateTime.UtcNow.AddMinutes(3),
                 Issuer = "http://localhost:5194",
                 Audience = "http://localhost:5194",
                 SigningCredentials =
@@ -116,6 +115,7 @@ public class LoginController : ControllerBase
 
             var response = new
             {
+                Username = login.username,
                 IsAuthenticated = true,
                 AccessToken = accessTokenString,
                 AccExpires = accessExpireTime,

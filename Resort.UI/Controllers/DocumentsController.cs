@@ -1,8 +1,10 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Resort.Application.Documents;
 using Resort.Application.Firms;
+using Resort.UI.Contracts.Tokens;
 
 namespace Resort.UI.Controllers;
 
@@ -12,15 +14,21 @@ namespace Resort.UI.Controllers;
 public class DocumentsController : ControllerBase
 {
     private readonly IMediator _mediator;
+    private readonly AccessTokenExpireCheck _accessTokenExpireCheck;
 
-    public DocumentsController(IMediator mediator)
+    public DocumentsController(IMediator mediator, AccessTokenExpireCheck accessTokenExpireCheck)
     {
+        _accessTokenExpireCheck = accessTokenExpireCheck;
         _mediator = mediator;
     }
     
-    [HttpPost("upload")]
+    [HttpPost]
     public async Task<IResult> UploadDocument(IFormFile file)
     {
+        var tokenNotExpired = await _accessTokenExpireCheck.IsAccessTokenExpired();
+
+        if (!tokenNotExpired) return Results.BadRequest("Token Expired");
+        
         var fileName = Path.GetFileName(file.FileName);
         var fileType = file.ContentType;
         var fileExtension = Path.GetExtension(fileName);
@@ -48,6 +56,10 @@ public class DocumentsController : ControllerBase
     [HttpGet]
     public async Task<IResult> GetDocument()
     {
+        var tokenNotExpired = await _accessTokenExpireCheck.IsAccessTokenExpired();
+
+        if (!tokenNotExpired) return Results.BadRequest("Token Expired");
+        
         var result = await _mediator.Send(new GetAllDocumentsRequest());
         return Results.Ok(result);
     }
