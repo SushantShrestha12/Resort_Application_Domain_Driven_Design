@@ -301,6 +301,10 @@
               "target": "Package",
               "version": "[7.0.10, )"
             },
+            "Microsoft.Extensions.Caching.StackExchangeRedis": {
+              "target": "Package",
+              "version": "[7.0.13, )"
+            },
             "Microsoft.Extensions.DependencyInjection": {
               "target": "Package",
               "version": "[7.0.0, )"
@@ -309,9 +313,17 @@
               "target": "Package",
               "version": "[7.0.5, )"
             },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.3, )"
+            },
             "Pomelo.EntityFrameworkCore.MySql": {
               "target": "Package",
               "version": "[7.0.0, )"
+            },
+            "SixLabors.ImageSharp": {
+              "target": "Package",
+              "version": "[3.0.2, )"
             },
             "Swashbuckle.AspNetCore.SwaggerGen": {
               "target": "Package",
@@ -320,6 +332,10 @@
             "Swashbuckle.AspNetCore.SwaggerUI": {
               "target": "Package",
               "version": "[6.5.0, )"
+            },
+            "WebP_Net": {
+              "target": "Package",
+              "version": "[1.1.1, )"
             }
           },
           "imports": [

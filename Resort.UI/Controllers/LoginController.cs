@@ -46,7 +46,7 @@ public class LoginController : ControllerBase
         if (IsValidUser(login.username, login.password))
         {
             _session.SetString("Username", login.username);
-
+            var u = _session.GetString("Username");
             var accessTokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new[]
@@ -56,7 +56,7 @@ public class LoginController : ControllerBase
                     new Claim(JwtRegisteredClaimNames.Email, login.username),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
                 }),
-                Expires = DateTime.UtcNow.AddMinutes(3),
+                Expires = DateTime.UtcNow.AddMinutes(5),
                 Issuer = "http://localhost:5194",
                 Audience = "http://localhost:5194",
                 SigningCredentials =

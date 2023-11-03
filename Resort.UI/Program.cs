@@ -7,6 +7,7 @@ using Resort.Application.Firms;
 using Resort.Infrastructure;
 using Resort.UI.Contracts.Tokens;
 
+
 var builder = WebApplication.CreateBuilder(args);
 var cs = builder.Configuration.GetConnectionString("ResortContext");
 builder.Services.AddDbContext<ResortDbContext>(options => options.UseMySql(cs, ServerVersion.AutoDetect(cs)));
@@ -15,23 +16,31 @@ builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(Fir
 builder.Services.AddControllers();
 
 builder.Services.AddScoped<AccessTokenExpireCheck>();
+//builder.Services.AddScoped<CachedMemberRepository>();
 
 builder.Services.AddHttpContextAccessor();
 
-// builder.Services.AddEndpointsApiExplorer();
-
-// builder.Services.AddIdentity<IdentityUser, IdentityRole>()
-//     .AddEntityFrameworkStores<ResortDbContext>();
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    var connection = builder.Configuration.GetConnectionString("Redis");
+    options.Configuration = connection;
+});
 
 builder.Services.AddDistributedMemoryCache();
+
+// builder.Services.Configure<CookiePolicyOptions>(options =>
+// {
+//     options.CheckConsentNeeded = context => false;
+//     options.MinimumSameSitePolicy = SameSiteMode.None;
+// });
 
 builder.Services.AddSession(
     options => {
     options.IdleTimeout = TimeSpan.FromMinutes(15);
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
-    options.Cookie.Name = ".Resort.Session"; }
-    );
+    options.Cookie.Name = ".Resort.Session"; 
+    });
 
 builder.Services.AddSwaggerGen(c =>
 {
@@ -111,7 +120,6 @@ app.UseCors(
             .AllowAnyMethod()
             .AllowAnyOrigin();
     });
-
 
 app.MapControllers();
 app.Run();
