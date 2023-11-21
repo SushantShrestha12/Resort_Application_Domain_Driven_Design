@@ -1,7 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
-
-namespace Resort.Domain.SharedKernel
+﻿namespace Resort.Domain.SharedKernel
 {
     public sealed record Address
     {

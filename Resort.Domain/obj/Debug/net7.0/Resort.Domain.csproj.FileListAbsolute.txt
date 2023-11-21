@@ -35,10 +35,8 @@
 /Users/sushantshrestha/RiderProjects/Resort_Application_Domain_Driven_Design/Resort.Domain/obj/Debug/net7.0/refint/Resort.Domain.dll
 /Users/sushantshrestha/RiderProjects/Resort_Application_Domain_Driven_Design/Resort.Domain/obj/Debug/net7.0/Resort.Domain.pdb
 /Users/sushantshrestha/RiderProjects/Resort_Application_Domain_Driven_Design/Resort.Domain/bin/Debug/net7.0/Resort.Domain.deps.json
-/Users/sushantshrestha/RiderProjects/Resort_Application_Domain_Driven_Design/Resort.Domain/bin/Debug/net7.0/Resort.Domain.runtimeconfig.json
 /Users/sushantshrestha/RiderProjects/Resort_Application_Domain_Driven_Design/Resort.Domain/bin/Debug/net7.0/Resort.Domain.dll
 /Users/sushantshrestha/RiderProjects/Resort_Application_Domain_Driven_Design/Resort.Domain/bin/Debug/net7.0/Resort.Domain.pdb
-/Users/sushantshrestha/RiderProjects/Resort_Application_Domain_Driven_Design/Resort.Domain/obj/Debug/net7.0/Resort.Domain.genruntimeconfig.cache
 /Users/sushantshrestha/RiderProjects/Resort_Application_Domain_Driven_Design/Resort.Domain/obj/Debug/net7.0/ref/Resort.Domain.dll
 /Users/sushantshrestha/RiderProjects/Resort_Application_Domain_Driven_Design/Resort.Domain/bin/Debug/net7.0/Microsoft.AspNetCore.Http.Abstractions.dll
 /Users/sushantshrestha/RiderProjects/Resort_Application_Domain_Driven_Design/Resort.Domain/bin/Debug/net7.0/Microsoft.AspNetCore.Http.Features.dll
@@ -46,3 +44,5 @@
 /Users/sushantshrestha/RiderProjects/Resort_Application_Domain_Driven_Design/Resort.Domain/bin/Debug/net7.0/Microsoft.Net.Http.Headers.dll
 /Users/sushantshrestha/RiderProjects/Resort_Application_Domain_Driven_Design/Resort.Domain/bin/Debug/net7.0/Microsoft.AspNetCore.Connections.Abstractions.dll
 /Users/sushantshrestha/RiderProjects/Resort_Application_Domain_Driven_Design/Resort.Domain/obj/Debug/net7.0/Resort.Domain.csproj.CopyComplete
+/Users/sushantshrestha/RiderProjects/Resort_Application_Domain_Driven_Design/Resort.Domain/bin/Debug/net7.0/System.IO.Pipelines.dll
+/Users/sushantshrestha/RiderProjects/Resort_Application_Domain_Driven_Design/Resort.Domain/bin/Debug/net7.0/Microsoft.Extensions.Primitives.dll
