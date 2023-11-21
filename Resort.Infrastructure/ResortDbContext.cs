@@ -1,5 +1,4 @@
-﻿using System.Reflection.Metadata;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Resort.Domain;
 using Resort.Domain.Bookings;
 using Resort.Domain.Customers;
@@ -33,7 +32,6 @@ namespace Resort.Infrastructure
         public DbSet<Room> Rooms { get; set; }
         public DbSet<CheckInDetail> CheckInDetails { get; set; }
         public DbSet<CheckOutDetail> CheckOutDetails { get; set; }
-        
         public DbSet<AccessToken> AccessTokens { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
