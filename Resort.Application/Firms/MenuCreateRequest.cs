@@ -27,8 +27,8 @@ public class MenuCreateRequestHandler: IRequestHandler<MenuCreateRequest>
         
     public async Task Handle(MenuCreateRequest request, CancellationToken cancellationToken)
     {
-        Rates price = new Rates(request.Currency, request.Amount);
-        FoodType foodType = new FoodType(request.NonVeg);
+        var price = new Rates(request.Currency, request.Amount);
+        var foodType = new FoodType(request.NonVeg);
         
         var firm = _context.Firms.FirstOrDefault(f => f.Id == request.FirmId);
         firm.AddFoodMenu(request.FoodName, price, request.Quantity, foodType);
