@@ -10,14 +10,15 @@ namespace Resort.UI.Controllers;
 public class RoomsController: ControllerBase
 {
     private readonly IMediator _mediator;
-
+    
     public RoomsController(IMediator mediator)
     {
         _mediator = mediator;
     }
+ 
 
     [HttpPost]
-    [Route("Firm/{firmId}/room")]
+    // [Route("Firm/{firmId}/room")]
     public async Task<IResult> CreateRoom(Guid firmId, [FromBody] RoomCreate room)
     {
         var command = new RoomCreateRequest()
@@ -37,6 +38,4 @@ public class RoomsController: ControllerBase
         await _mediator.Send(command);
         return Results.Ok();
     }
-    
-    
 }

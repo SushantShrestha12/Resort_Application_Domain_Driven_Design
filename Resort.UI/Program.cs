@@ -6,6 +6,7 @@ using Microsoft.OpenApi.Models;
 using Resort.Application.Firms;
 using Resort.Infrastructure;
 using Resort.UI.Contracts.Tokens;
+using Resort.UI.MessageQueue;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,8 +17,10 @@ builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(Fir
 builder.Services.AddControllers();
 
 builder.Services.AddScoped<AccessTokenExpireCheck>();
+builder.Services.AddScoped<RabbitMqService>();
 //builder.Services.AddScoped<CachedMemberRepository>();
 
+builder.Services.AddDistributedMemoryCache();
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddStackExchangeRedisCache(options =>
@@ -25,14 +28,6 @@ builder.Services.AddStackExchangeRedisCache(options =>
     var connection = builder.Configuration.GetConnectionString("Redis");
     options.Configuration = connection;
 });
-
-builder.Services.AddDistributedMemoryCache();
-
-// builder.Services.Configure<CookiePolicyOptions>(options =>
-// {
-//     options.CheckConsentNeeded = context => false;
-//     options.MinimumSameSitePolicy = SameSiteMode.None;
-// });
 
 builder.Services.AddSession(
     options => {

@@ -36,7 +36,7 @@ public class DocumentsController : ControllerBase
         var filePath = Path.Combine("/Users/sushantshrestha/desktop/ResortClient", fileName);
 
         await using (var stream = new FileStream(filePath, FileMode.Create))
-        {   
+        {  
             await file.CopyToAsync(stream);
         }
         

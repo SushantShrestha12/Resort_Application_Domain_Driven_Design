@@ -16,6 +16,7 @@ public class FirmsController : ControllerBase
 {
     private readonly IMediator _mediator;
     private readonly ResortDbContext _context;
+    private readonly ISession _session;
     private readonly AccessTokenExpireCheck _accessTokenExpireCheck;
     private readonly IHttpContextAccessor _httpContextAccessor;
 
@@ -26,6 +27,7 @@ public class FirmsController : ControllerBase
         _mediator = mediator;
         _accessTokenExpireCheck = accessTokenExpireCheck;
         _httpContextAccessor = httpContextAccessor;
+        _session = httpContextAccessor.HttpContext.Session;
     }
 
     [HttpPost]
@@ -35,7 +37,8 @@ public class FirmsController : ControllerBase
 
         if (username == null)
         {
-            throw new Exception("You have to login first.");
+            _session.GetString("Username");
+            // throw new Exception("You have to login first.");
         }
 
         var tokenNotExpired = await _accessTokenExpireCheck.IsAccessTokenExpired();

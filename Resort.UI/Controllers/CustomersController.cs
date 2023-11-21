@@ -7,6 +7,7 @@ using Resort.Application.Firms;
 using Resort.Domain.Customers;
 using Resort.UI.Contracts;
 using Resort.UI.Contracts.Tokens;
+using Resort.UI.MessageQueue;
 
 namespace Resort.UI.Controllers;
 
@@ -20,16 +21,20 @@ public class CustomersController : ControllerBase
     private readonly AccessTokenExpireCheck _accessTokenExpireCheck;
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IDistributedCache _cache;
+    private readonly RabbitMqService _rabbitMqService;
 
     public CustomersController(IMediator mediator, IHttpContextAccessor httpContextAccessor,
-        AccessTokenExpireCheck accessTokenExpireCheck, IDistributedCache cache)
+        AccessTokenExpireCheck accessTokenExpireCheck, IDistributedCache cache, RabbitMqService rabbit)
     {
         _mediator = mediator;
         _session = httpContextAccessor.HttpContext.Session;
         _accessTokenExpireCheck = accessTokenExpireCheck;
         _httpContextAccessor = httpContextAccessor; 
         _cache = cache;
+        _rabbitMqService = rabbit;
     }
+
+   
     
 
     [HttpPost]
@@ -57,7 +62,12 @@ public class CustomersController : ControllerBase
             WardNumber = customer.WardNumber,
             MobileNumber = customer.MobileNumber,
             Email = customer.Email
+            
         };
+        
+        var message = $"New customer created: {customer.Name}";
+        _rabbitMqService.PublishMessage(message, "customerQueue");
+
 
         var result = await _mediator.Send(command);
         return Results.Ok(result);
@@ -80,12 +90,6 @@ public class CustomersController : ControllerBase
     {
         var username = _session.GetString("Username");
         // var username = _httpContextAccessor.HttpContext.Request.Headers["Username"].FirstOrDefault(); //To get the username from the header (Javascript)
-
-        // if (username == null)
-        // {
-        //     username = _session.GetString("Username");
-        //     // throw new Exception("You have to login first.");
-        // }
 
         var tokenNotExpired = await _accessTokenExpireCheck.IsAccessTokenExpired();
 
@@ -110,25 +114,6 @@ public class CustomersController : ControllerBase
         return Results.BadRequest("Token Expired");
 
     }
-    
-    // [HttpGet]
-    // public async Task<IResult> ReadCustomer()
-    // {
-    //     var username = _session.GetString("Username"); //For swagger API
-    //     // var username = _httpContextAccessor.HttpContext.Request.Headers["Username"].FirstOrDefault(); //To get the username from the header (Javascript)
-    //
-    //
-    //     if (username == null)
-    //     {
-    //         throw new Exception("You have to login first.");
-    //     }
-    //
-    //     var tokenNotExpired = await _accessTokenExpireCheck.IsAccessTokenExpired();
-    //
-    //     if (!tokenNotExpired) return Results.BadRequest("Token Expired");
-    //     var result = await _mediator.Send(new GetAllCustomersRequest());
-    //     return Results.Ok(result);
-    // }
 
     [HttpGet]
     public async Task<IResult> ReadCustomer()
@@ -142,14 +127,13 @@ public class CustomersController : ControllerBase
             return Results.Ok(cache);
         }
         
-        // var username = _session.GetString("Username");
         var username = _httpContextAccessor.HttpContext.Request.Headers["Username"].FirstOrDefault();
     
         if (username == null)
         {
             username = _session.GetString("Username");
             // throw new Exception("You have to login first.");
-        }
+        } 
     
         var tokenNotExpired = await _accessTokenExpireCheck.IsAccessTokenExpired();
     
@@ -160,7 +144,12 @@ public class CustomersController : ControllerBase
         var customersJson = JsonConvert.SerializeObject(result);
         
         await _cache.SetStringAsync(cacheKey, customersJson);
-    
+        
+        _rabbitMqService.ConsumeMessages("customerQueue", message =>
+        {
+            var receivedCustomer = JsonConvert.DeserializeObject<Customer>(message);
+        });
+
         return Results.Ok(result);
     }
 }
